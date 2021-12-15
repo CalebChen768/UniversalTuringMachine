@@ -10,6 +10,12 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QListWidget>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QDebug>
+#include <QList>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,14 +28,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void loadFileList();
+    void append(QStringList* list,QString in);
+
 public slots:
     void nextStep();
     void importFile();
     void startSimulate();
 private:
     Ui::MainWindow *ui;
-    QLabel *label_k,*label_sigma,*label_gama,*label_q0,*label_B,*label_F;
-    QLineEdit *line_k,*line_sigma,*line_gama,*line_q0,*line_B,*line_F;
+    QLabel *label_k,*label_sigma,*label_gamma,*label_q0,*label_B,*label_F;
+    QLineEdit *line_k,*line_sigma,*line_gamma,*line_q0,*line_B,*line_F;
     QLineEdit *line_str;
     QVBoxLayout *layout_label,*layout_line;
     QLabel *label_str;
