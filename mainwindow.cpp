@@ -2,9 +2,9 @@
 #include "ui_mainwindow.h"
 #define START_X 40
 #define START_Y 40
-#define DELTA_Y 50
+#define DELTA_Y 40
 #define LABEL_X 20
-#define LABEL_Y 40
+#define LABEL_Y 30
 #define LINE_X 200
 #define LINE_Y 30
 
@@ -26,34 +26,33 @@ MainWindow::MainWindow(QWidget *parent)
 
     label_k = new QLabel(this);
     label_k->setGeometry(START_X, START_Y+DELTA_Y*0, LABEL_X, LABEL_Y);
-    label_k->setText("    K");
+    label_k->setAlignment(Qt::AlignCenter);
+    label_k->setText("\n   状态集合:");
 
     label_sigma = new QLabel(this);
     label_sigma->setGeometry(START_X, START_Y+DELTA_Y*1, LABEL_X, LABEL_Y);
-    label_sigma->setText("    ∑");
-
-    label_gamma = new QLabel(this);
-    label_gamma->setGeometry(START_X, START_Y+DELTA_Y*2, LABEL_X, LABEL_Y);
-    label_gamma->setText("    Γ");
+    label_sigma->setAlignment(Qt::AlignCenter);
+    label_sigma->setText("\n   带上符号:");
 
     label_q0 = new QLabel(this);
     label_q0->setGeometry(START_X, START_Y+DELTA_Y*3, LABEL_X, LABEL_Y);
-    label_q0->setText("    q0");
+    label_q0->setAlignment(Qt::AlignCenter);
+    label_q0->setText("   开始状态:");
 
     label_B = new QLabel(this);
     label_B->setGeometry(START_X, START_Y+DELTA_Y*4, LABEL_X, LABEL_Y);
-    label_B->setText("    B");
+    label_B->setAlignment(Qt::AlignVCenter);
+    label_B->setText("   空白符:\n");
 
     label_F = new QLabel(this);
     label_F->setGeometry(START_X, START_Y+DELTA_Y*5, LABEL_X, LABEL_Y);
-    label_F->setText("    F");
+    label_F->setAlignment(Qt::AlignVCenter);
+    label_F->setText("   终止状态:\n");
 
     line_k = new QLineEdit(this);
     line_k->setFixedSize(LINE_X,LINE_Y);
     line_sigma = new QLineEdit(this);
     line_sigma->setFixedSize(LINE_X,LINE_Y);
-    line_gamma = new QLineEdit(this);
-    line_gamma->setFixedSize(LINE_X,LINE_Y);
     line_q0 = new QLineEdit(this);
     line_q0->setFixedSize(LINE_X,LINE_Y);
     line_B = new QLineEdit(this);
@@ -64,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent)
     layout_label = new QVBoxLayout(this);
     layout_label->addWidget(label_k);
     layout_label->addWidget(label_sigma);
-    layout_label->addWidget(label_gamma);
     layout_label->addWidget(label_q0);
     layout_label->addWidget(label_B);
     layout_label->addWidget(label_F);
@@ -72,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     layout_line = new QVBoxLayout(this);
     layout_line->addWidget(line_k);
     layout_line->addWidget(line_sigma);
-    layout_line->addWidget(line_gamma);
     layout_line->addWidget(line_q0);
     layout_line->addWidget(line_B);
     layout_line->addWidget(line_F);
@@ -82,12 +79,12 @@ MainWindow::MainWindow(QWidget *parent)
     layout_1->addLayout(layout_line);
 
     group_1=new QGroupBox(this);
-    group_1->setGeometry(40, 40, 300, 400);
+    group_1->setGeometry(40, 50, 300, 390);
     group_1->setLayout(layout_1);
 
     //配置文件引入窗
     list_file = new QListWidget(this);
-    list_file->setGeometry(380, 40, 220, 250);
+    list_file->setGeometry(380, 50, 220, 240);
 
     loadFileList();
 
@@ -97,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //状态转移函数框
     list_func = new QListWidget(this);
-    list_func->setGeometry(640, 40, 340, 300);
+    list_func->setGeometry(640, 50, 340, 300);
     list_func->setWrapping(true);
 
     //输入纸带
@@ -119,7 +116,6 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(btn_import, SIGNAL(clicked()), this, SLOT(importFile()));
     QObject::connect(btn_confirm, SIGNAL(clicked()), this, SLOT(startSimulate()));
     QObject::connect(btn_step, SIGNAL(clicked()), this, SLOT(nextStep()));
-
 }
 
 MainWindow::~MainWindow()
@@ -148,50 +144,43 @@ void MainWindow::importFile()
             if(temp.size()==0)
                 break;
             QStringList list = temp.split(" ");
-            list_func->addItem("           δ("+list[0]+","+list[1]+","+list[2]+")=("+list[3]+","+list[4]+")           ");
-            append(&K,list[0]);
+            list_func->addItem("           δ(q"+list[0]+","+list[1]+")=(q"+list[2]+","+list[3]+","+list[4]+")           ");
+            append(&K,"q"+list[0]);
             append(&Sigma,list[1]);
-            append(&Gamma,list[2]);
-            //Q0.append(list[0]);
-            append(&B,list[3]);
-            append(&F,list[4]);
+            if(list.contains("#"))
+                append(&F,"q"+list[0]);
         }
     }
-    QString k,sigma,gamma,q0,b,f;
+    QString k,sigma,q0,b,f;
+
     q0="q0";
     for(int i=0;i<K.size();i++)
          k+=(K[i]+" ");
     for(int i=0;i<Sigma.size();i++)
          sigma+=(Sigma[i]+" ");
-    for(int i=0;i<Gamma.size();i++)
-         gamma+=(Gamma[i]+" ");
-    for(int i=0;i<B.size();i++)
-         b+=(B[i]+" ");
     for(int i=0;i<F.size();i++)
          f+=(F[i]+" ");
+    b="B";
 
     line_k->setText(k);
     line_sigma->setText(sigma);
-    line_gamma->setText(gamma);
     line_q0->setText(q0);
     line_B->setText(b);
     line_F->setText(f);
 
     line_k->setEnabled(false);
     line_sigma->setEnabled(false);
-    line_gamma->setEnabled(false);
     line_q0->setEnabled(false);
     line_B->setEnabled(false);
     line_F->setEnabled(false);
 }
 void MainWindow::startSimulate()
 {
-
+    QString str=line_str->text();
 }
 
 void MainWindow::nextStep()
 {
-
 
 }
 
