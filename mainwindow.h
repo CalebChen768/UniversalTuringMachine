@@ -33,11 +33,12 @@ public:
     ~MainWindow();
     void loadFileList();
     void append(QStringList* list,QString in);
-
+    void update(int move_q);
 public slots:
     void nextStep();
     void importFile();
     void startSimulate();
+
 private:
     Ui::MainWindow *ui;
     QLabel *label_k,*label_sigma,*label_gamma,*label_q0,*label_B,*label_F;
@@ -49,7 +50,9 @@ private:
     QGroupBox *group_1;
     QListWidget *list_file,*list_func;
     QPushButton *btn_import,*btn_confirm,*btn_step;
-
+    QString str;
     MyLabel* label[25];
+    MyLabel* label_now;
+    QLabel* label_fun;
 };
 #endif // MAINWINDOW_H

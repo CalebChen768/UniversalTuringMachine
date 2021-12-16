@@ -46,3 +46,18 @@ void MyLabel::setPos(int x,int y)
 {
     label->setGeometry(x,y,40,55);
 }
+
+void MyLabel::setStyleSheet(QString sheet)
+{
+    label->setStyleSheet(sheet);
+}
+
+void MyLabel::setFixedSize(int x, int y)
+{
+    label->setFixedSize(x,y);
+}
+
+QSize MyLabel::pos()
+{
+    return QSize(label->geometry().x(),label->geometry().y());
+}

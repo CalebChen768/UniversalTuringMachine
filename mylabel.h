@@ -6,7 +6,7 @@
 #include <QMainWindow>
 #include <QFont>
 #include <QFrame>
-
+#include <QSize>
 class MyLabel
 {
 public:
@@ -18,10 +18,11 @@ public:
     void hide();
     void show();
     void setPos(int x,int y);
+    void setStyleSheet(QString sheet);
+    void setFixedSize(int x,int y);
+    QSize pos();
 private:
     QLabel *label;
-
-
 };
 
 #endif // MYLABEL_H
