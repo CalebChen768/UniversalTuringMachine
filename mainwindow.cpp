@@ -113,6 +113,14 @@ MainWindow::MainWindow(QWidget *parent)
     btn_step->setGeometry(930, 390, 50, 40);
     btn_step->setText("下一步");
 
+    //纸带
+    for(int i=0;i<24;i++)
+    {
+        label[i]=new MyLabel(this);
+        label[i]->setPos(30+40*i,500);
+        label[i]->hide();
+    }
+
     QObject::connect(btn_import, SIGNAL(clicked()), this, SLOT(importFile()));
     QObject::connect(btn_confirm, SIGNAL(clicked()), this, SLOT(startSimulate()));
     QObject::connect(btn_step, SIGNAL(clicked()), this, SLOT(nextStep()));
@@ -177,6 +185,15 @@ void MainWindow::importFile()
 void MainWindow::startSimulate()
 {
     QString str=line_str->text();
+    label[2]->setText("B");
+    label[2]->show();
+    for(int i=0;i<str.length();i++)
+    {
+        label[i+3]->setText(str[i]);
+        label[i+3]->show();
+        label[i+4]->setText("B");
+        label[i+4]->show();
+    }
 }
 
 void MainWindow::nextStep()

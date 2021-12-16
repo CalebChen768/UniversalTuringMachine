@@ -16,6 +16,9 @@
 #include <QStringList>
 #include <QDebug>
 #include <QList>
+#include "mylabel.h"
+#include <QFont>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -47,5 +50,6 @@ private:
     QListWidget *list_file,*list_func;
     QPushButton *btn_import,*btn_confirm,*btn_step;
 
+    MyLabel* label[25];
 };
 #endif // MAINWINDOW_H
