@@ -10,7 +10,7 @@
 #define X 30
 #define Y 500
 #define SIZE 100
-
+ 
 QString filepath="";
 QStringList K;
 QStringList Sigma;
