@@ -11,7 +11,7 @@
 #define Y 500
 #define SIZE 100
 
-QString filepath=QDir::currentPath();
+QString filepath="";
 QStringList K;
 QStringList Sigma;
 QStringList Q0;
@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setFixedSize(1000, 700);
     this->setWindowTitle("Universal Turing Machine");
+
+    qDebug()<<filepath;
 
     label_k = new QLabel(this);
     label_k->setGeometry(START_X, START_Y+DELTA_Y*0, LABEL_X, LABEL_Y);
@@ -160,7 +162,7 @@ void MainWindow::importFile()
     F.clear();
     int row=list_file->currentRow();
     list_func->clear();
-    QFile file(filepath + "/" + QString::number(row) + ".txt");
+    QFile file(filepath  + QString::number(row) + ".txt");
       qDebug()<<"import3";
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -309,7 +311,7 @@ void MainWindow::nextStep()
 
 void MainWindow::loadFileList()
 {
-    QFile file(filepath+"/filelist.txt");
+    QFile file(filepath+"filelist.txt");
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream in(&file);
